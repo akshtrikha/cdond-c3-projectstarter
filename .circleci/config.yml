@@ -113,7 +113,7 @@ jobs:
           command:  |
             cd frontend
             npm i
-            npm audit --json --audit-level=critical
+            npm audit | grep -B 1 -A 10 High
       - save_cache:
           paths:  [frontend/node_modules]
           key:  frontend-build
@@ -130,7 +130,7 @@ jobs:
           command:  |
             cd backend
             npm i
-            npm audit --json --audit-level=critical
+            npm audit | grep -B 1 -A 10 Critical
       - save_cache:
           paths:  [backend/node_modules]
           key:  backend-build
