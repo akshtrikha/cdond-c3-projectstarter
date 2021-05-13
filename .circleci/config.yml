@@ -81,8 +81,8 @@ jobs:
             npm i
             npm run test
       - save_cache:
-          paths: [backend/node_modules]
-          key: backend-build
+          paths: [frontend/node_modules]
+          key: frontend-build
                 
   test-backend:
     docker:
@@ -97,6 +97,9 @@ jobs:
             cd backend
             npm i
             npm run test
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
             
 #   scan-frontend:
 #     docker:
