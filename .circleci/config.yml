@@ -130,7 +130,7 @@ jobs:
           command:  |
             cd backend
             npm i
-            npm audit --audit-level=critical
+            npm audit --json --audit-level=critical
       - save_cache:
           paths:  [backend/node_modules]
           key:  backend-build
