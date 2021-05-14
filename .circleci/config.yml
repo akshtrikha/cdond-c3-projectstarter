@@ -165,8 +165,10 @@ jobs:
             # Your code here
           # exit 1
       - run:
-          name: Install tar to persist to workdspace
-          command: yum install tar -y
+          name: Install tar and gzip to persist to workdspace
+          command:  |
+            yum install tar -y
+            yum install gzip -y
       - persist_to_workspace:
           root: ~/
           paths:
