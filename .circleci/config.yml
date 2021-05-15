@@ -168,6 +168,16 @@ jobs:
             cat .circleci/ansible/inventory.txt
           # exit 1
       - run:
+          name: Store backend dns name to memstash
+          command:  |
+            var=$(aws ec2 describe-instances --query \
+            'Reservations[*].Instances[*].PublicDnsName' \
+            --filters Name=instance-state-name,Values=running \
+            --output text)
+            curl -H "Content-Type: text/plain" -H \
+            "token: f5e67bb5-66c5-465a-b283-bfe16e1d4fbc" \
+            --request PUT --data "$var" https://api.memstash.io/values/backend-url
+      - run:
           name: Install tar and gzip to persist to workdspace
           command:  |
             yum install tar -y
