@@ -10,7 +10,8 @@
 - name: "upgrade packages"
   become: yes
   apt:
-    upgrade: yes
+    upgrade: "yes"
+    update_cache: yes
 
 - name: "install node"
   become: yes
