@@ -201,6 +201,11 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "cb:58:a9:e7:b1:d0:bd:49:b6:03:e2:5c:f6:38:bf:8c"
+      - run:
+          name: Check files and dir
+          command:  |
+            ls -a
+            pwd
       - attach_workspace:
           at: ~/
       - run:
@@ -219,11 +224,13 @@ jobs:
           name: Check files and dir
           command:  |
             ls -a
+            cd project
+            ls -a
             pwd
       - run:
           name: Configure server
           command: |
-            yes | ansible-playbook ansible/configure-server.yml -i ansible/inventory
+            yes | ansible-playbook .circleci/ansible/configure-server.yml -i .circleci/ansible/inventory
           # exit 1
       # Here's where you will add some code to rollback on failure      
 
