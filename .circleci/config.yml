@@ -224,8 +224,6 @@ jobs:
           name: Check files and dir
           command:  |
             ls -a
-            cd project
-            ls -a
             pwd
       - run:
           name: Configure server
