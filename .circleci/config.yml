@@ -201,7 +201,7 @@ jobs:
       - run:
           name: Install Ansible
           command: |
-            apk add ansible -y
+            apk add ansible
             echo "[defaults]" | cat > .circleci/ansible/ansible.cfg
             echo "host_key_checking = False" | cat >> ansible.cfg
           # exit 1
