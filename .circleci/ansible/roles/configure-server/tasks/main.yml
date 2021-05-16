@@ -22,6 +22,7 @@
       npm:
         name: pm2
         global: yes
+      become: yes
   
     - name: "checking on em"
       shell:  |
