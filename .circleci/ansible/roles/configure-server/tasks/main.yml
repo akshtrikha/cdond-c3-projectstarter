@@ -1,36 +1,36 @@
-    # - name: "wait 60 seconds for target connection to become reachable/usable."
-    #   wait_for_connection:
-    #     timeout: 60
-    
-    - name: "update apt packages"
-      become: yes
-      apt:
-        update_cache: yes
-
-    - name: "upgrade packages"
-      become: yes
-      apt:
-        upgrade: yes
-
-    - name: "install node"
-      become: yes
-      shell: |
-        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
-        sudo apt-get install -y nodejs
-
-    - name: "install pm2"
-      npm:
-        name: pm2
-        global: yes
-      become: yes
+  # - name: "wait 60 seconds for target connection to become reachable/usable."
+  #   wait_for_connection:
+  #     timeout: 60
   
-    - name: "checking on em"
-      shell:  |
-        ls -a
-        pwd
+  - name: "update apt packages"
+    become: yes
+    apt:
+      update_cache: yes
 
-    # - name: "install python for Ansible."
-    #   shell:  |
-    #     apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-    #     python3 -m ensurepip
-    #     pip3 install --no-cache --upgrade pip setuptools
+  - name: "upgrade packages"
+    become: yes
+    apt:
+      upgrade: yes
+
+  - name: "install node"
+    become: yes
+    shell: |
+      curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+      sudo apt-get install -y nodejs
+
+  - name: "install pm2"
+    npm:
+      name: pm2
+      global: yes
+    become: yes
+
+  - name: "checking on em"
+    shell:  |
+      ls -a
+      pwd
+
+  # - name: "install python for Ansible."
+  #   shell:  |
+  #     apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+  #     python3 -m ensurepip
+  #     pip3 install --no-cache --upgrade pip setuptools
