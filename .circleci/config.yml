@@ -226,6 +226,7 @@ jobs:
             ls -a
             pwd
             cat .circleci/ansible/inventory.txt
+            cat .circleci/ansible/ansible.cfg
       - run:
           name: Configure server
           command: |
