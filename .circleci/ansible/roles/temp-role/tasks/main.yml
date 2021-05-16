@@ -1,0 +1,4 @@
+- name: "update you packages"
+  become: yes
+  apt:
+    update_cache: yes

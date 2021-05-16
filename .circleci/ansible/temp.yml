@@ -1,0 +1,6 @@
+- name: "testing playbook"
+  hosts: web
+  user: ubuntu
+  gather_facts: true
+  roles:
+    - temp-role
