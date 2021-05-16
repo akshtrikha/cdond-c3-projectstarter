@@ -1,0 +1,27 @@
+    - name: "wait 600 seconds for target connection to become reachable/usable."
+      wait_for_connection:
+        timeout: 600
+    
+    - name: "update apt packages"
+      become: yes
+      apt:
+        update_cache: yes
+
+    - name: "upgrade packages"
+      become: yes
+      apt:
+        upgrade: yes
+
+    - name: "install node"
+      become: yes
+      shell: |
+        curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+
+    - name: "install pm2"
+      shell:  |
+        npm i pm2 -g
+
+    - name: "install python for Ansible."
+      shell:  |
+        apk add --update python3
