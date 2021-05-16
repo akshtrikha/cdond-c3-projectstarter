@@ -182,6 +182,11 @@ jobs:
           command:  |
             yum install tar -y
             yum install gzip -y
+      - run:
+          name: Check files and dir
+          command:  |
+            ls -a
+            pwd
       - persist_to_workspace:
           root: ~/
           paths:
@@ -199,6 +204,11 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+          name: Check files and dir
+          command:  |
+            ls -a
+            pwd
+      - run:
           name: Install Ansible
           command: |
             apk add ansible
@@ -206,9 +216,14 @@ jobs:
             echo "host_key_checking = False" | cat >> ansible.cfg
           # exit 1
       - run:
+          name: Check files and dir
+          command:  |
+            ls -a
+            pwd
+      - run:
           name: Configure server
           command: |
-            yes | ansible-playbook main.yml -i inventory
+            yes | ansible-playbook ansible/configure-server.yml -i ansible/inventory
           # exit 1
       # Here's where you will add some code to rollback on failure      
 
