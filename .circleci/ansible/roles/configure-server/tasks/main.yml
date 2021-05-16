@@ -19,8 +19,14 @@
         sudo apt-get install -y nodejs
 
     - name: "install pm2"
+      npm:
+        name: pm2
+        global: yes
+  
+    - name: "checking on em"
       shell:  |
-        sudo npm i pm2 -g
+        ls -a
+        pwd
 
     # - name: "install python for Ansible."
     #   shell:  |
