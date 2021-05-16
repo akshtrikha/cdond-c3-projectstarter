@@ -1,6 +1,6 @@
-    # - name: "wait 600 seconds for target connection to become reachable/usable."
-    #   wait_for_connection:
-    #     timeout: 600
+    - name: "wait 60 seconds for target connection to become reachable/usable."
+      wait_for_connection:
+        timeout: 60
     
     - name: "update apt packages"
       become: yes
@@ -22,8 +22,8 @@
       shell:  |
         sudo npm i pm2 -g
 
-    - name: "install python for Ansible."
-      shell:  |
-        apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-        python3 -m ensurepip
-        pip3 install --no-cache --upgrade pip setuptools
+    # - name: "install python for Ansible."
+    #   shell:  |
+    #     apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+    #     python3 -m ensurepip
+    #     pip3 install --no-cache --upgrade pip setuptools
