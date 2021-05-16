@@ -14,8 +14,8 @@
 
 - name: "install node"
   become: yes
-  yum:
-    name: node
+  apt:
+    name: nodejs
     state: present
 
 - name: "install pm2"
