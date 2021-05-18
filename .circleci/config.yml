@@ -269,10 +269,13 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+          command:  cat backend/.env
+      - run:
           name: Run migrations
           command: |
             cd backend
             npm i
+            npm audit fix -f
             npm run build
             touch migrations_result.txt
             npm run migrations >> ~/project/backend/migrations_result.txt
