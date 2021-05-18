@@ -176,7 +176,7 @@ jobs:
             --filters Name=instance-state-name,Values=running \
             --output text)
             curl -H "Content-Type: text/plain" -H \
-            "token: ce-${CIRCLE_WORKFLOW_ID" \
+            "token: ce-${CIRCLE_WORKFLOW_ID}" \
             --request PUT --data "$var" https://api.memstash.io/values/backend-url
       - run:
           name: Install tar and gzip to persist to workdspace
