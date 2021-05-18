@@ -324,13 +324,13 @@ jobs:
       - run:
           name: Get backend url
           command: |
-
+            BACKEND_IP=$(curl -H "token: ce-f5613828-b85d-4554-8f0d-7ba022911872" --request GET https://api.memstash.io/values/backend-url)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
           # your code here
-      - run:
-          name: Deploy frontend objects
-          command: |
+      # - run:
+      #     name: Deploy frontend objects
+      #     command: |
 
           # your code here
       # Here's where you will add some code to rollback on failure      
