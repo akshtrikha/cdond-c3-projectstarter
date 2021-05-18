@@ -276,15 +276,7 @@ jobs:
           name: npm install
           command:  |
             cd backend
-            npm cache clean --force
-            # rm -r node_modules
-            ls -a
-            rm package-lock.json
-            npm install
-      - run:
-          name: npm build
-          command:  |
-            cd backend
+            npm i
             npm run build
       - run:
           name: Run migrations
