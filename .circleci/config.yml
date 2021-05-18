@@ -279,13 +279,12 @@ jobs:
             npm cache clean --force
             # rm -r node_modules
             ls
-            # rm package-lock.json
+            rm package-lock.json
             npm install
       - run:
-          name: npm audit
+          name: npm build
           command:  |
             cd backend
-            npm audit fix --audit-level=critical --force
             npm run build
       - run:
           name: Run migrations
