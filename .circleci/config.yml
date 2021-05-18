@@ -272,6 +272,8 @@ jobs:
           name: Run migrations
           command: |
             cd backend
+            npm i
+            npm run build
             touch migrations_result.txt
             npm run migrations >> ~/project/backend/migrations_result.txt
             echo 'DISPLAY CONTENTS'
