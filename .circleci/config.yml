@@ -278,7 +278,7 @@ jobs:
             cd backend
             npm cache clean --force
             # rm -r node_modules
-            ls
+            ls -a
             rm package-lock.json
             npm install
       - run:
