@@ -271,6 +271,7 @@ jobs:
       - run:
           name: Run migrations
           command: |
+            cd backend
             touch migrations_result.txt
             npm run migrations >> ~/project/backend/migrations_result.txt
             echo 'DISPLAY CONTENTS'
@@ -300,26 +301,39 @@ jobs:
           # exit 1
     #  Here's where you will add some code to rollback on failure      
 
-#   deploy-frontend:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#             export API_URL="http://${BACKEND_IP}:3030"
-#             echo "${API_URL}"
-#       - run:
-#           name: Deploy frontend objects
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure      
+  deploy-frontend:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - run:
+          name: Intall git
+          command:  |
+            yum install git -y
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+            yum install nodejs -y
+            node --version
+            npm --version
+      - run:
+          name: Get backend url
+          command: |
+
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+          # your code here
+      - run:
+          name: Deploy frontend objects
+          command: |
+
+          # your code here
+      # Here's where you will add some code to rollback on failure      
                     
 #   deploy-backend:
 #     docker:
