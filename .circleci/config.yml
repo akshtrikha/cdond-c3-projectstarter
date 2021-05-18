@@ -215,6 +215,24 @@ jobs:
             ls -a
             pwd
       - run:
+          name: Configure env variables
+          command:  |
+            touch backend/.env
+            echo ENVIRONMENT=production >> "backend/.env"
+            echo TYPEORM_CONNECTION=postgres >> "backend/.env"
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
+            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
+            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
+            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
+            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+            echo NODE_ENV=development >> "backend/.env"
+
+            cat backend/.env
+
+      - run:
           name: Install Ansible
           command: |
             apk add ansible
@@ -233,8 +251,9 @@ jobs:
           command: |
             ansible-playbook .circleci/ansible/configure-server.yml -i .circleci/ansible/inventory.txt
             echo "Success."
-      # yes | ansible-playbook .circleci/ansible/configure-server.yml -i .circleci/ansible/inventory.txt
+          # yes | ansible-playbook .circleci/ansible/configure-server.yml -i .circleci/ansible/inventory.txt
           # exit 1
+      
       # Here's where you will add some code to rollback on failure      
 
   # run-migrations:
@@ -251,7 +270,7 @@ jobs:
   #         name: Send migration results to memstash
   #         command: |
   #           # Your code here
-  #           exit 1
+            # exit 1
      # Here's where you will add some code to rollback on failure      
 
 #   deploy-frontend:
