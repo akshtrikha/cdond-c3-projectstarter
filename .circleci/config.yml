@@ -264,8 +264,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
       - attach_workspace:
           at: ~/
       - run:
@@ -278,6 +276,9 @@ jobs:
           name: npm install
           command:  |
             cd backend
+            npm cache clean --force
+            rm -r node_modules
+            rm package-lock.json
             npm install
       - run:
           name: npm audit
