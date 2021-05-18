@@ -277,8 +277,9 @@ jobs:
           command:  |
             cd backend
             npm cache clean --force
-            rm -r node_modules
-            rm package-lock.json
+            # rm -r node_modules
+            ls
+            # rm package-lock.json
             npm install
       - run:
           name: npm audit
