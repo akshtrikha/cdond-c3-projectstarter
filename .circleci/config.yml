@@ -320,8 +320,6 @@ jobs:
           command:  |
             yum install git -y
       - checkout
-      - attach_workspace:
-          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -331,6 +329,8 @@ jobs:
             npm --version
             yum install tar -y
             yum install gzip -y
+      - attach_workspace:
+          at: ~/
       - run:
           name: Get backend url
           command: |
@@ -368,8 +368,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install tar -y
-            yum install gzip -y
             cd backend
             ls
           # your code here
