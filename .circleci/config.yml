@@ -329,6 +329,8 @@ jobs:
             yum install nodejs -y
             node --version
             npm --version
+            yum install tar -y
+            yum install gzip -y
       - run:
           name: Get backend url
           command: |
@@ -351,23 +353,35 @@ jobs:
           # your code here
       # Here's where you will add some code to rollback on failure      
                     
-#   deploy-backend:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Deploy backend
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
-
+  deploy-backend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "cb:58:a9:e7:b1:d0:bd:49:b6:03:e2:5c:f6:38:bf:8c"
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            yum install tar -y
+            yum install gzip -y
+            cd backend
+            ls
+          # your code here
+      - run:
+          name: Deploy backend
+          no_output_timeout: 10m
+          command: |
+            tar -czvf backend.tgz ./backend
+            cat backend/.env
+            cd .circleci/ansible
+            cat inventory.txt
+          # your code here
+      # Here's where you will add some code to rollback on failure  
+  
 #   smoke-test:
 #     docker:
 #       # Lightweight Docker image 
@@ -450,8 +464,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
-#       - deploy-backend:
-#           requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
 #       - smoke-test:
 #           requires: [deploy-backend, deploy-frontend]
 #       - cloudfront-update:
