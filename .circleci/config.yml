@@ -323,6 +323,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            yum install sudo
             curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
             yum install nodejs -y
             node --version
@@ -368,6 +369,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            apk add ansible
+            echo "[defaults]" | cat > .circleci/ansible/ansible.cfg
+            echo "host_key_checking = False" | cat >> .circleci/ansible/ansible.cfg
             cd backend
             ls
           # your code here
