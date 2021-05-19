@@ -341,15 +341,17 @@ jobs:
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}" >> .env
             cat .env
-
+      - run:
+          name: Deploy frontend objects
+          command: |
             npm i
             npm run build
             aws s3 cp ~/project/frontend/dist s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}" --recursive
           # your code here
-      # - run:
-      #     name: Deploy frontend objects
-      #     command: |
-
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/frontend/.env
           # your code here
       # Here's where you will add some code to rollback on failure      
                     
@@ -379,6 +381,7 @@ jobs:
             cat backend/.env
             cd .circleci/ansible
             cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
           # your code here
       # Here's where you will add some code to rollback on failure  
   
