@@ -48,22 +48,3 @@
     cd /home/ubuntu/backend
     pm2 start npm --name backend -- start
     pm2 ls
-#--------------------------------------------
-#- name: Stop PM2
-#  ignore_errors: yes
-#  shell: |
-#    sudo pm2 stop backend
-#    sudo pm2 delete backend
-
-#- name: Build node service
-#  shell: |
-#    cd /home/ubuntu/backend
-#    sudo npm i
-#    sudo npm audit fix --audit-level=critical --force
-#    sudo npm run build
-      
-#- name: Start pm2 service
-#  shell: |
-#    cd /home/ubuntu/backend
-#    sudo pm2 start npm --name backend -- start 
-#    ls /home/ubuntu/.pm2/logs

@@ -378,7 +378,7 @@ jobs:
           # your code here
       - run:
           name: Deploy backend
-          no_output_timeout: 40m
+          no_output_timeout: 90m
           command: |
             tar -czvf backend.tgz ./backend
             cat backend/.env
