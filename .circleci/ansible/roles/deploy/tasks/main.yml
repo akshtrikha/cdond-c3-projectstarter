@@ -12,7 +12,6 @@
   shell: |
     cd /home/ubuntu
     tar -xvzf backend.tgz
-    ls
 
 
 #unarchive: src=/home/ubuntu/backend.tgz dest=/home/ubuntu
@@ -32,7 +31,7 @@
   become: true
   shell: |
     cd /home/ubuntu/backend
-    npm install
+    npm i -y
   # ls -la
   # npm audit fix --audit-level=critical --force
 
