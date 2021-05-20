@@ -31,6 +31,8 @@
     cd /home/ubuntu/backend   
     source ~/.bashrc
     nvm install 16
+  args:
+    executable: /bin/bash
 
 - name: "Use latest npm to install dependencies"
   become: true
