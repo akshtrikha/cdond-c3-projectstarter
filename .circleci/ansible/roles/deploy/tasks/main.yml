@@ -23,7 +23,12 @@
 - name: "Curl nvm"
   become: true
   shell: |
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
+    wget https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh
+    ls -l
+    chmod 777 *.sh
+    ./install.sh
+  args:
+    executable: /bin/bash
 
 - name: "Install latest node and npm"
   become: true
