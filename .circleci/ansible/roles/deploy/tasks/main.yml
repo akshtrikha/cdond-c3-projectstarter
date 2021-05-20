@@ -12,6 +12,8 @@
   shell: |
     cd /home/ubuntu
     tar -xvzf backend.tgz
+    ls
+
 
 #unarchive: src=/home/ubuntu/backend.tgz dest=/home/ubuntu
 
@@ -20,42 +22,25 @@
 #    src: /root/project/backend
 #    dest: /home/ubuntu/
 
-- name: "Curl nvm"
-  become: true
-  shell: |
-    wget https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh
-    ls -l
-    chmod 777 *.sh
-    ./install.sh
-  args:
-    executable: /bin/bash
-
-- name: "Install latest node and npm"
-  become: true
-  shell: |
-    source ~/.bashrc
-    nvm install 16
-    nvm use 16
-  args:
-    executable: /bin/bash
-
-- name: "Use latest npm to install dependencies"
+- name: "Update npm"
   become: true
   shell: |
     cd /home/ubuntu/backend
+    npm install -g npm@latest
+
+- name: "install package dependencies"
+  become: true
+  shell: |
+    cd /home/ubuntu/backend   
     npm install
-  args:
-    executable: /bin/bash
-  # npm audit fix --audit-level=critical --force
   # ls -la
+  # npm audit fix --audit-level=critical --force
 
 - name: "build package"
   become: true
   shell: |
     cd /home/ubuntu/backend
     npm run build
-  args:
-    executable: /bin/bash
 
 - name: Executing node
   become: true
@@ -63,8 +48,6 @@
     cd /home/ubuntu/backend
     pm2 start npm --name backend -- start
     pm2 ls
-  args:
-    executable: /bin/bash
 #--------------------------------------------
 #- name: Stop PM2
 #  ignore_errors: yes
