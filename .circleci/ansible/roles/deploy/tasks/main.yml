@@ -20,18 +20,22 @@
 #    src: /root/project/backend
 #    dest: /home/ubuntu/
 
-- name: "Update node and npm"
+- name: "Curl nvm"
   become: true
   shell: |
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
-    source ~/.bashrc
-    nvm install 16
-    nvm use 16
 
-- name: "install package dependencies"
+- name: "Install latest node and npm"
   become: true
   shell: |
     cd /home/ubuntu/backend   
+    source ~/.bashrc
+    nvm install 16
+
+- name: "Use latest npm to install dependencies"
+  become: true
+  shell: |
+    nvm use 16
     npm install
   # npm audit fix --audit-level=critical --force
   # ls -la
