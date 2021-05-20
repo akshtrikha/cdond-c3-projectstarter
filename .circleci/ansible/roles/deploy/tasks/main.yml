@@ -28,17 +28,19 @@
 - name: "Install latest node and npm"
   become: true
   shell: |
-    cd /home/ubuntu/backend   
     source ~/.bashrc
     nvm install 16
+    nvm use 16
   args:
     executable: /bin/bash
 
 - name: "Use latest npm to install dependencies"
   become: true
   shell: |
-    nvm use 16
+    cd /home/ubuntu/backend
     npm install
+  args:
+    executable: /bin/bash
   # npm audit fix --audit-level=critical --force
   # ls -la
 
@@ -47,6 +49,8 @@
   shell: |
     cd /home/ubuntu/backend
     npm run build
+  args:
+    executable: /bin/bash
 
 - name: Executing node
   become: true
@@ -54,6 +58,8 @@
     cd /home/ubuntu/backend
     pm2 start npm --name backend -- start
     pm2 ls
+  args:
+    executable: /bin/bash
 #--------------------------------------------
 #- name: Stop PM2
 #  ignore_errors: yes
