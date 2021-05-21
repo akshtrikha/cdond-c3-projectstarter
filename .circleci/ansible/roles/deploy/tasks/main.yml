@@ -5,45 +5,37 @@
 
 - name: Transfer Zipped file
   copy:
-    src: /root/project/backend.tgz
+    src: /root/project/backend/dist.tgz
     dest: /home/ubuntu/
 
 - name: Untar file
   shell: |
     cd /home/ubuntu
-    tar -xvzf backend.tgz
+    tar -xvzf dist.tgz
 
+# - name: "Update npm"
+#   become: true
+#   shell: |
+#     cd /home/ubuntu/backend
+#     npm install -g npm@latest
 
-#unarchive: src=/home/ubuntu/backend.tgz dest=/home/ubuntu
+# - name: "install package dependencies"
+#   become: true
+#   shell: |
+#     cd /home/ubuntu/backend
+#     npm i -y
+#   # ls -la
+#   # npm audit fix --audit-level=critical --force
 
-#- name: Transfer backend files cloud server
-#  copy:
-#    src: /root/project/backend
-#    dest: /home/ubuntu/
+# - name: "build package"
+#   become: true
+#   shell: |
+#     cd /home/ubuntu/backend
+#     npm run build
 
-- name: "Update npm"
-  become: true
-  shell: |
-    cd /home/ubuntu/backend
-    npm install -g npm@latest
-
-- name: "install package dependencies"
-  become: true
-  shell: |
-    cd /home/ubuntu/backend
-    npm i -y
-  # ls -la
-  # npm audit fix --audit-level=critical --force
-
-- name: "build package"
-  become: true
-  shell: |
-    cd /home/ubuntu/backend
-    npm run build
-
-- name: Executing node
-  become: true
-  shell: |
-    cd /home/ubuntu/backend
-    pm2 start npm --name backend -- start
-    pm2 ls
+# - name: Executing node
+#   become: true
+#   shell: |
+#     cd /home/ubuntu/backend
+#     pm2 start npm --name backend -- start
+#     pm2 ls
