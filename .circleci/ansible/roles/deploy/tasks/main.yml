@@ -1,41 +1,84 @@
-#- name: Creates directory
-#  file:
-#    path: /home/ubuntu/backend
-#    state: directory
+---
+- name: "install dependencies."
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
 
-- name: Transfer Zipped file
+- name: "install pm2"
+  become: true
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+
+- name: Creates directory
+  file:
+    path: /home/ubuntu/backend
+    state: directory
+
+- name: Copy backend dist files web server
   copy:
-    src: /root/project/backend/dist.tgz
-    dest: /home/ubuntu/
+    src: /root/project/artifact.tar.gz
+    dest: /home/ubuntu/backend/artifact.tar.gz
 
-- name: Untar file
+- name: Uncompress Backend
   shell: |
-    cd /home/ubuntu
-    tar -xvzf dist.tgz
+    cd /home/ubuntu/backend
+    tar xvzf artifact.tar.gz -C .
+    ls -la
+    
+- name: Build
+  become: true
+  shell: |
+    cd /home/ubuntu/backend
+    npm install
+    npm run build
+- name: Start PM2
+  shell: |
+    cd /home/ubuntu/backend 
+    pm2 start npm --name backend -- start
 
-# - name: "Update npm"
-#   become: true
-#   shell: |
-#     cd /home/ubuntu/backend
-#     npm install -g npm@latest
+# #- name: Creates directory
+# #  file:
+# #    path: /home/ubuntu/backend
+# #    state: directory
 
-# - name: "install package dependencies"
-#   become: true
-#   shell: |
-#     cd /home/ubuntu/backend
-#     npm i -y
-#   # ls -la
-#   # npm audit fix --audit-level=critical --force
+# - name: Transfer Zipped file
+#   copy:
+#     src: /root/project/backend/dist.tgz
+#     dest: /home/ubuntu/
 
-# - name: "build package"
-#   become: true
+# - name: Untar file
 #   shell: |
-#     cd /home/ubuntu/backend
-#     npm run build
+#     cd /home/ubuntu
+#     tar -xvzf dist.tgz
 
-# - name: Executing node
-#   become: true
-#   shell: |
-#     cd /home/ubuntu/backend
-#     pm2 start npm --name backend -- start
-#     pm2 ls
+# # - name: "Update npm"
+# #   become: true
+# #   shell: |
+# #     cd /home/ubuntu/backend
+# #     npm install -g npm@latest
+
+# # - name: "install package dependencies"
+# #   become: true
+# #   shell: |
+# #     cd /home/ubuntu/backend
+# #     npm i -y
+# #   # ls -la
+# #   # npm audit fix --audit-level=critical --force
+
+# # - name: "build package"
+# #   become: true
+# #   shell: |
+# #     cd /home/ubuntu/backend
+# #     npm run build
+
+# # - name: Executing node
+# #   become: true
+# #   shell: |
+# #     cd /home/ubuntu/backend
+# #     pm2 start npm --name backend -- start
+# #     pm2 ls

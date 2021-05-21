@@ -371,7 +371,9 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update nodejs npm
-            apk add ansible
+            apk add --update ansible
+            apk add --update tar gzip curl
+            apk add --update openssh-client
             echo "[defaults]" | cat > .circleci/ansible/ansible.cfg
             echo "host_key_checking = False" | cat >> .circleci/ansible/ansible.cfg
             cd backend
@@ -381,17 +383,20 @@ jobs:
           name: Deploy backend
           no_output_timeout: 90m
           command: |
-            tar -czvf backend.tgz ./backend
-            cat backend/.env
-            cd backend
-            npm i
-            npm run build
-            ls -alh
-            tar -czvf dist.tgz ./dist
-            cd ../.circleci/ansible/
-            cat inventory.txt
+            tar -C backend -czvf artifact.tar.gz .
+            ls -la
+            cd .circleci/ansible/
+            ansible-galaxy install weareinteractive.environment
             ansible-playbook -i inventory.txt deploy-backend.yml
             echo "Success"
+          # cat backend/.env
+          # cd backend
+          # npm i
+          # npm run build
+          # ls -alh
+          # tar -czvf dist.tgz ./dist
+          # cd ../.circleci/ansible/
+          # cat inventory.txt
       # Here's where you will add some code to rollback on failure  
   
 #   smoke-test:
