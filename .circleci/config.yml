@@ -407,8 +407,8 @@ jobs:
           name: Backend smoke test.
           command: |
             url="http://$BACKEND_IP:3030/api/status"
-            echo url
-            curl url -v
+            echo $url
+            curl $url -v
       - run:
           name: Frontend smoke test.
           command: |
