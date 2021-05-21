@@ -400,12 +400,9 @@ jobs:
           command: |
             apk add --update tar gzip curl
       - run:
-          name: Get backend url
-          command: |
-            BACKEND_IP=$(curl -H "token: ce-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/backend-url)
-      - run:
           name: Backend smoke test.
           command: |
+            BACKEND_IP=$(curl -H "token: ce-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/backend-url)
             url="http://$BACKEND_IP:3030/api/status"
             echo $url
             curl $url -v
