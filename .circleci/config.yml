@@ -1,36 +1,53 @@
 version: 2.1
 
-# commands:
-#   destroy-environment:
-#     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-#     parameters:
-#       # Add parameter here   
-#     steps:
-#       - run:
-#           name: Destroy environments
-#           when: on_fail
-#           command: |
-#             # Your code here
-#             # exit 1
+commands:
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.  
+    steps:
+      - run:
+          name: Install AWS CLI if not Exist
+          when: on_fail
+          command: |
+            if ! [ -x "$(command -v aws)" ]; then
+            pip install awscli
+            else
+            echo "AWS CLI already installed"
+            fi
+      - run:
+          name: Destroy S3 Buckets
+          when: on_fail
+          command: |
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
+      - run:
+          name: Destroy Stacks
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name frontend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation delete-stack --stack-name backend-${CIRCLE_WORKFLOW_ID:0:7}
+      # - run:
+      #     name: Destroy Promotion Stack
+      #     when: on_fail
+      #     command: |
+      #       aws cloudformation delete-stack --stack-name udapeople-cloudfront
 
-#   revert-migrations:
-#     description: Revert the last migration if successfully run in the current workflow.
-#     parameters:
-#       # Add parameter here     
-#     steps:
-#       - run:
-#           name: Revert migrations
-#           # Add when this will run
-#           command: |
-#             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-#             SUCCESS = 1
-#             if(( $SUCCESS==1 )); 
-#             then
-#             #  cd ~/project/backend
-#             #  npm install
-#             #  Add revert code here. You can find this in the Getting Started section.
-#               # exit 1
-#             fi
+  revert-migrations:
+    description: Revert the last migration if successfully run in the current workflow.   
+    steps:
+      - run:
+          name: Revert migrations
+          when: on_fail
+          command: |
+            SUCCESS=$(curl -H "token: ce-${CIRCLE_WORKFLOW_ID}" \
+            --request GET https://api.memstash.io/values/migration)
+            echo "************** SUCCESS = $SUCCESS"
+            if(( $SUCCESS==1 )); 
+            then
+             cd backend
+             npm install
+             npm run migrations:revert
+            fi
+
             
 jobs:
   build-frontend:
@@ -192,7 +209,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      # Here's where you will add some code to rollback on failure      
+      - destroy-environment
 
   configure-infrastructure:
     docker:
@@ -257,7 +274,7 @@ jobs:
           root: ~/
           paths:
             - project/backend/.env
-      # Here's where you will add some code to rollback on failure      
+      - destroy-environment
 
   run-migrations:
     docker:
@@ -309,7 +326,7 @@ jobs:
             
           # Your code here
           # exit 1
-    #  Here's where you will add some code to rollback on failure      
+      - revert-migrations
 
   deploy-frontend:
     docker:
@@ -355,7 +372,8 @@ jobs:
           paths:
             - project/frontend/.env
           # your code here
-      # Here's where you will add some code to rollback on failure      
+      - destroy-environment
+      - revert-migrations
                     
   deploy-backend:
     docker:
@@ -417,7 +435,9 @@ jobs:
             url="http://$BACKEND_IP:3030/api/status"
             echo $url
             curl $url -v
-#       # Here's where you will add some code to rollback on failure  
+      
+      - revert-migrations
+      - destroy-environment
 
 #   cloudfront-update:
 #     docker:
