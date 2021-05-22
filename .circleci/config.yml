@@ -474,24 +474,42 @@ jobs:
       - revert-migrations
       - destroy-environment # Rollback on failure  
 
-# cleanup:
-#     docker:
-#       # Docker image here
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Get old stack workflow id
-#           command: |
-#             # your code here
-#             export OldWorkflowID="the id here"
-#             export STACKS=[] #put the list of stacks here
-#       - run:
-#           name: Remove old stacks and files
-#           command: |
-#             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-#             then
-#               # your code here
-#             fi
+  cleanup:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Dependencies
+          command: |
+            yum -y install tar gzip
+      - run:
+          name: Get & Delete Old Stacks
+          command: |
+            OldWorkflowID=$(curl -H "token: oldID-${CIRCLE_WORKFLOW_ID}" \
+                        --request GET https://api.memstash.io/values/oldID)
+
+            export STACKS=$(aws cloudformation list-stacks \
+            --query "StackSummaries[*].StackName" \
+            --stack-status-filter CREATE_COMPLETE \
+            --no-paginate --output text)
+
+            echo Old-Workflow-ID: "$oldID"
+            echo STACKS: "$STACKS" 
+            
+            if [ ! -z $oldID ]
+            then
+              aws s3 rm s3://udapeople-${oldID} --recursive
+              aws s3 rb s3://udapeople-${oldID} --force
+              aws cloudformation delete-stack --stack-name udapeople-backend-${oldID}
+              aws cloudformation delete-stack --stack-name udapeople-frontend-${oldID}
+              echo "Stacks deleted succesfully"
+            else
+              echo "Fresh New Stacks"
+            fi
+
+      - revert-migrations
+      - destroy-environment # Rollback on failure 
             
 
 workflows:
