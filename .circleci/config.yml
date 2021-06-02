@@ -406,7 +406,7 @@ jobs:
             ls
           # your code here
       - run:
-          name: Deploy backend
+          name: Deploy backend and install node exporter
           no_output_timeout: 90m
           command: |
             tar -C backend -czvf artifact.tar.gz .
@@ -415,7 +415,7 @@ jobs:
             ansible-galaxy install weareinteractive.environment
             ansible-playbook -i inventory.txt deploy-backend.yml
             echo "Success"
-  
+
   smoke-test:
     docker:
       - image: python:3.7-alpine3.11
