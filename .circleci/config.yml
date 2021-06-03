@@ -279,6 +279,7 @@ jobs:
             cat .circleci/ansible/ansible.cfg
       - run:
           name: Configure server
+          no_output_timeout: 20m
           command: |
             ansible-playbook .circleci/ansible/configure-server.yml -i .circleci/ansible/inventory.txt
             echo "Success."
