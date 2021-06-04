@@ -411,6 +411,7 @@ jobs:
             echo "host_key_checking = False" | cat >> .circleci/ansible/ansible.cfg
             cd backend
             ls
+            cat .env
           # your code here
       - run:
           name: Deploy backend and install node exporter
