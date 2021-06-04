@@ -448,7 +448,7 @@ jobs:
           name: Backend smoke test.
           command: |
             BACKEND_DNS=$(curl -H "token: ce-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/backend-dns)
-            url="http://$BACKEND_DNS:3030/api/status"
+            url="http://$BACKEND_DNS-wrong-url:3030/api/status"
             echo $url
             curl $url -v
       
