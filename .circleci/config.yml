@@ -499,7 +499,7 @@ jobs:
       - run:
           name: Get & Delete Old Stacks
           command: |
-            oldID=$(curl -H "token: oldID-${CIRCLE_WORKFLOW_ID}"\ 
+            oldID=$(curl -H "token: oldID-${CIRCLE_WORKFLOW_ID}" \
             --request GET https://api.memstash.io/values/oldID)
 
             export stacks=$(aws cloudformation list-stacks \
