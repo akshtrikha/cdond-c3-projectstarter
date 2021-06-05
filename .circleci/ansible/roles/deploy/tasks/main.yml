@@ -41,7 +41,7 @@
   become: true
   shell:  |
     cd /home/ubuntu/backend
-    cp dist/* ~/
+    cp -r dist/* ~/
 
 - name: Start PM2
   shell: |
