@@ -316,8 +316,6 @@ jobs:
             touch migrations_result.txt
             ls
             npm run migrations >> ~/project/backend/migrations_result.txt
-            echo 'DISPLAY CONTENTS'
-            echo '*****************'
             cat migrations_result.txt
           # Your code here
           # exit 1
@@ -402,10 +400,10 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update nodejs npm
-            apk add --update ansible
-            apk add --update tar gzip curl
             apk add --update openssh-client
+            apk add --update tar gzip curl
+            apk add --update ansible
+            apk add --update nodejs npm
             echo "[defaults]" | cat > .circleci/ansible/ansible.cfg
             echo "host_key_checking = False" | cat >> .circleci/ansible/ansible.cfg
             cd backend
