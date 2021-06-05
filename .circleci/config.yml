@@ -251,7 +251,7 @@ jobs:
             echo ENVIRONMENT=production >> "backend/.env"
             echo TYPEORM_CONNECTION=postgres >> "backend/.env"
             echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
-            echo TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts >> "backend/.env"
+            echo TYPEORM_ENTITIES=./src/modules/**/*.entity.ts >> "backend/.env"
             echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
             echo TYPEORM_HOST="$TYPEORM_HOST" >> "backend/.env"
             echo TYPEORM_PORT="$TYPEORM_PORT" >> "backend/.env"
@@ -368,7 +368,7 @@ jobs:
             touch .env
             BACKEND_IP=$(curl -H "token: ce-${CIRCLE_WORKFLOW_ID}" --request GET https://api.memstash.io/values/backend-ip)
             echo "$BACKEND_IP"
-            export API_URL="http://${BACKEND_IP}:3000"
+            export API_URL="http://${BACKEND_IP}:3030"
             echo API_URL="$API_URL" >> .env
             cat .env
       - run:
@@ -376,7 +376,7 @@ jobs:
           command: |
             cd frontend
             npm i
-            npm run build:prod
+            npm run build
             aws s3 cp ~/project/frontend/dist s3://udapeople-"${CIRCLE_WORKFLOW_ID:0:7}" --recursive
           # your code here
       - persist_to_workspace:
